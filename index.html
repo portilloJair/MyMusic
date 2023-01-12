@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi Musica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-12 col-lg-10">
+                    <h1 class="text-center">Video Yotube a MP3</h1>
+                </div>
+                <div class="col-12 col-lg-10">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="inptUrl" placeholder="Url">
+                    </div>
+                </div>
+                <div class="col-12 col-lg-10">
+                    <button class="btn btn-primary w-100" onclick="descargar();">Descargar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+
+    <script>
+        function descargar() {
+            if($('#inptUrl').val().trim().lenght > 0){
+                let url = $('#inptUrl').val();
+            let result = url.includes('watch');
+            let format;
+            let id;
+
+            if (result) {
+                result = url.includes('list');
+                if (result) {
+                    format = url.split('=')[1].split('&');
+                    id = format[0];
+                } else {
+                    format = url.split('=');
+                    id = format[1];
+                }
+            } else {
+                format = url.split('/');
+                id = format[3];
+            }
+
+            console.log(id);
+
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': '8d0b80842cmsh15787734f8179a3p1bb709jsn4c5c3fa8c698',
+                    'X-RapidAPI-Host': 'youtube-mp36.p.rapidapi.com'
+                }
+            };
+
+            fetch('https://youtube-mp36.p.rapidapi.com/dl?id=' + format[3], options)
+                .then(response => response.json())
+                .then(response => {
+                    console.log(response.ok);
+                    if (!response.ok) {
+                        console.log(response);
+                        window.open(response.link, '_blank');
+                        $('#inptUrl').val('');
+                    }
+
+                })
+                .catch(err => console.error(err));
+            }else{
+                alert('Inserte un url valido');
+            }
+        };
+    </script>
+</body>
+
+</html>
