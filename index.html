@@ -34,49 +34,49 @@
 
     <script>
         function descargar() {
-            if($('#inptUrl').val().trim().lenght > 0){
+            if ($('#inptUrl').val().trim().length > 0) {
                 let url = $('#inptUrl').val();
-            let result = url.includes('watch');
-            let format;
-            let id;
+                let result = url.includes('watch');
+                let format;
+                let id;
 
-            if (result) {
-                result = url.includes('list');
                 if (result) {
-                    format = url.split('=')[1].split('&');
-                    id = format[0];
-                } else {
-                    format = url.split('=');
-                    id = format[1];
-                }
-            } else {
-                format = url.split('/');
-                id = format[3];
-            }
-
-            console.log(id);
-
-            const options = {
-                method: 'GET',
-                headers: {
-                    'X-RapidAPI-Key': '8d0b80842cmsh15787734f8179a3p1bb709jsn4c5c3fa8c698',
-                    'X-RapidAPI-Host': 'youtube-mp36.p.rapidapi.com'
-                }
-            };
-
-            fetch('https://youtube-mp36.p.rapidapi.com/dl?id=' + format[3], options)
-                .then(response => response.json())
-                .then(response => {
-                    console.log(response.ok);
-                    if (!response.ok) {
-                        console.log(response);
-                        window.open(response.link, '_blank');
-                        $('#inptUrl').val('');
+                    result = url.includes('list');
+                    if (result) {
+                        format = url.split('=')[1].split('&');
+                        id = format[0];
+                    } else {
+                        format = url.split('=');
+                        id = format[1];
                     }
+                } else {
+                    format = url.split('/');
+                    id = format[3];
+                }
 
-                })
-                .catch(err => console.error(err));
-            }else{
+                console.log(id);
+
+                const options = {
+                    method: 'GET',
+                    headers: {
+                        'X-RapidAPI-Key': '8d0b80842cmsh15787734f8179a3p1bb709jsn4c5c3fa8c698',
+                        'X-RapidAPI-Host': 'youtube-mp36.p.rapidapi.com'
+                    }
+                };
+
+                fetch('https://youtube-mp36.p.rapidapi.com/dl?id=' + format[3], options)
+                    .then(response => response.json())
+                    .then(response => {
+                        console.log(response.ok);
+                        if (!response.ok) {
+                            console.log(response);
+                            window.open(response.link, '_blank');
+                            $('#inptUrl').val('');
+                        }
+
+                    })
+                    .catch(err => console.error(err));
+            } else {
                 alert('Inserte un url valido');
             }
         };
